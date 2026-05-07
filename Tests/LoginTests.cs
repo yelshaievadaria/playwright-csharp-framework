@@ -57,4 +57,83 @@ public class LoginTests : BaseTest
 
         Assert.That(await error.InnerTextAsync(), Does.Contain("locked out"));
     }
+    [Test]
+    public async Task LoginAndAddItemToCart()
+    {
+        var loginPage = new LoginPage(Page);
+
+        var inventoryPage = new InventoryPage(Page);
+
+        var cartPage = new CartPage(Page);
+
+        await loginPage.GoToAsync();
+
+        await loginPage.LoginAsync(
+            "standard_user",
+            "secret_sauce");
+
+        await inventoryPage.AddItemToCartAsync();
+
+        await inventoryPage.OpenCartAsync();
+
+        await Page.WaitForTimeoutAsync(2000);
+
+        var itemName =
+            await cartPage.GetCartItemNameAsync();
+
+        Assert.That(
+            itemName,
+            Does.Contain("Sauce Labs Backpack"));
+    }
+    [Test]
+    // FULL E2E FLOW 
+    public async Task CompleteCheckoutFlow()
+    {
+        var loginPage = new LoginPage(Page);
+
+        var inventoryPage = new InventoryPage(Page);
+
+        var cartPage = new CartPage(Page);
+
+        var checkoutPage = new CheckoutPage(Page);
+
+        var overviewPage =
+            new CheckoutOverviewPage(Page);
+
+        var completePage =
+            new CheckoutCompletePage(Page);
+
+        await loginPage.GoToAsync();
+
+        await loginPage.LoginAsync(
+            "standard_user",
+            "secret_sauce");
+
+        await inventoryPage.AddItemToCartAsync();
+
+        await inventoryPage.OpenCartAsync();
+
+        var itemName =
+            await cartPage.GetCartItemNameAsync();
+
+        Assert.That(
+            itemName,
+            Does.Contain("Sauce Labs Backpack"));
+
+        await cartPage.ClickCheckoutAsync();
+
+        await checkoutPage.FillCheckoutInformationAsync(
+            "Totoro",
+            "Miyazaki",
+            "FR34 7WQ");
+
+        await overviewPage.FinishCheckoutAsync();
+
+        var successMessage =
+            await completePage.GetSuccessMessageAsync();
+
+        Assert.That(
+            successMessage,
+            Does.Contain("Thank you"));
+    }
 }
