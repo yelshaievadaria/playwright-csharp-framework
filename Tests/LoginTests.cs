@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using PlaywrightTests.Base;
 using PlaywrightTests.Pages;
+using PlaywrightTests.TestData;
 
 namespace PlaywrightTests.Tests;
 
@@ -12,7 +13,7 @@ public class LoginTests : BaseTest
         var loginPage = new LoginPage(Page);
 
         await loginPage.GoToAsync();
-        await loginPage.LoginAsync("standard_user", "secret_sauce");
+        await loginPage.LoginAsync(Users.StandardUser, Users.Password);
 
         await Page.WaitForTimeoutAsync(2000);
 
@@ -25,7 +26,7 @@ public class LoginTests : BaseTest
         var loginPage = new LoginPage(Page);
 
         await loginPage.GoToAsync();
-        await loginPage.LoginAsync("standard_user", "wrong_password");
+        await loginPage.LoginAsync(Users.StandardUser, Users.InvalidPassword);
 
         var error = Page.Locator("[data-test='error']");
 
@@ -38,7 +39,7 @@ public class LoginTests : BaseTest
         var loginPage = new LoginPage(Page);
 
         await loginPage.GoToAsync();
-        await loginPage.LoginAsync("", "secret_sauce");
+        await loginPage.LoginAsync("", Users.Password);
 
         var error = Page.Locator("[data-test='error']");
 
@@ -51,7 +52,7 @@ public class LoginTests : BaseTest
         var loginPage = new LoginPage(Page);
 
         await loginPage.GoToAsync();
-        await loginPage.LoginAsync("locked_out_user", "secret_sauce");
+        await loginPage.LoginAsync(Users.LockedUser, Users.Password);
 
         var error = Page.Locator("[data-test='error']");
 
@@ -69,8 +70,8 @@ public class LoginTests : BaseTest
         await loginPage.GoToAsync();
 
         await loginPage.LoginAsync(
-            "standard_user",
-            "secret_sauce");
+            Users.StandardUser,
+            Users.Password);
 
         await inventoryPage.AddItemToCartAsync();
 
@@ -106,8 +107,8 @@ public class LoginTests : BaseTest
         await loginPage.GoToAsync();
 
         await loginPage.LoginAsync(
-            "standard_user",
-            "secret_sauce");
+            Users.StandardUser,
+            Users.Password);
 
         await inventoryPage.AddItemToCartAsync();
 
