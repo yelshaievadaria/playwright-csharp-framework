@@ -1,22 +1,24 @@
-﻿# 🧪 Playwright QA Automation Framework
+﻿```markdown
+# 🧪 Playwright QA Automation Framework
 
 Professional UI automation framework built with Playwright, C#, and NUnit.
 
-This project demonstrates real-world QA automation engineering practices with a focus on clean architecture, scalability, and maintainability.
+This project demonstrates modern QA automation practices with a focus on maintainable architecture, reusable components, and scalable UI test design. The framework follows the Page Object Model (POM) pattern and includes both positive and negative end-to-end test scenarios.
 
 ---
 
-## 🎯 Project Overview
+## 📌 Project Overview
 
-This framework was created to demonstrate:
+The project was created as part of a QA Automation portfolio to demonstrate:
+- UI automation using Playwright
+- clean framework architecture
+- reusable page objects
+- scalable test structure
+- centralized test data management
+- real-world automation workflow
 
-- End-to-End UI test automation
-- Page Object Model (POM) design pattern
-- Scalable and maintainable test architecture
-- Separation of test logic, page logic, and test data
-- Real-world QA automation workflow
+Application under test:
 
-The system under test is:  
 https://www.saucedemo.com
 
 ---
@@ -27,36 +29,53 @@ https://www.saucedemo.com
 - .NET 8
 - Playwright
 - NUnit
-- Git / GitHub
+- Git
+- GitHub
 
 ---
 
 ## 🏗 Framework Architecture
 
-The project follows a layered structure:
-
-- **Base**
-  - Browser setup and test initialization
-
-- **Pages**
-  - Page Object Model classes
-  - Encapsulation of UI locators and actions
-
-- **Tests**
-  - Test scenarios (positive and negative flows)
-
-- **TestData**
-  - Centralized test data (users, passwords, constants)
-
-- **Utilities**
-  - Helper methods and reusable logic
+PlaywrightTests/
+│
+├── Base/
+│   └── BaseTest.cs
+│
+├── Pages/
+│   ├── LoginPage.cs
+│   ├── InventoryPage.cs
+│   ├── CartPage.cs
+│   ├── CheckoutPage.cs
+│   ├── CheckoutOverviewPage.cs
+│   └── CheckoutCompletePage.cs
+│
+├── Tests/
+│   └── LoginTests.cs
+│
+├── TestData/
+│   └── Users.cs
+│
+├── Utilities/
+│   └── WaitHelpers.cs
+│
+└── README.md
 
 ---
 
-## 📄 Page Object Model (POM)
+## 🧩 Framework Design
+
+### Base Layer
+Contains browser setup, Playwright initialization, and shared test configuration.
+
+### Pages Layer
+Implements the Page Object Model (POM).
+
+Each page class contains:
+- locators
+- page actions
+- reusable methods
 
 Implemented pages:
-
 - LoginPage
 - InventoryPage
 - CartPage
@@ -64,42 +83,54 @@ Implemented pages:
 - CheckoutOverviewPage
 - CheckoutCompletePage
 
-Each page contains:
-- Locators
-- UI actions
-- Reusable methods for test interaction
+### Tests Layer
+Contains:
+- end-to-end scenarios
+- UI validations
+- assertions
+- positive and negative tests
+
+### TestData Layer
+Stores reusable test data:
+- usernames
+- passwords
+- constants
+
+### Utilities Layer
+Contains reusable helper methods and wait utilities.
 
 ---
 
-## 🧪 Test Coverage
+## ✅ Automated Test Coverage
 
-### ✔ Positive Scenarios
+### Positive Scenarios
 - Successful login
-- Adding items to cart
-- Full checkout process
+- Add product to cart
+- Complete checkout flow
 - Order confirmation validation
 
-### ❌ Negative Scenarios
-- Invalid login credentials
-- Locked user access
-- Empty input validation
+### Negative Scenarios
+- Invalid password validation
+- Locked user validation
+- Empty credentials validation
 
 ---
 
-## 🚀 How to Run
+## 🚀 Running Tests
 
-### 1. Restore dependencies
+### Restore dependencies
+
 dotnet restore
 
-### 2. Build project
+### Build project
+
 dotnet build
 
-### 3. Run all tests
+### Run all tests
+
 dotnet test
 
----
-
-## 🎯 Run Single Test
+### Run a single test
 
 dotnet test --filter "Name=CompleteCheckoutFlow"
 
@@ -107,29 +138,21 @@ dotnet test --filter "Name=CompleteCheckoutFlow"
 
 ## 🔮 Future Improvements
 
-- CI/CD integration with GitHub Actions
+Planned enhancements:
+- CI/CD integration
 - Parallel test execution
 - HTML / Allure reporting
 - Screenshot capture on failure
-- Environment configuration (dev/test/prod)
-- API + UI hybrid test coverage
----
+- Environment configuration
+- API + UI hybrid testing
 
-## 📸 Screenshots
-
-### Test Execution
-![Test Run](Screenshots/test-run.png)
-
-### Framework Structure
-![Structure](Screenshots/solution-structure.png)
-
-### Browser Execution
-![Browser](Screenshots/browser-run.png)
 ---
 
 ## 👩‍💻 Author
 
-QA Automation Engineer focused on:
-- Scalable test automation frameworks
-- Clean and maintainable architecture
-- Real-world UI testing solutions
+QA Engineer focused on:
+- automation testing
+- scalable frameworks
+- clean architecture
+- maintainable UI testing
+```
