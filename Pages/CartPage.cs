@@ -2,26 +2,24 @@
 
 namespace PlaywrightTests.Pages;
 
-public class CartPage
+public class CartPage : BasePage
 {
-    private readonly IPage _page;
-
-    public CartPage(IPage page)
+    public CartPage(IPage page) : base(page)
     {
-        _page = page;
     }
 
-    private ILocator CartItem =>
-        _page.Locator(".inventory_item_name");
-
-    public async Task<string> GetCartItemNameAsync()
-    {
-        return await CartItem.InnerTextAsync();
-    }
     public async Task ClickCheckoutAsync()
     {
-        await _page
-            .Locator("[data-test='checkout']")
-            .ClickAsync();
+        await Page.ClickAsync("[data-test='checkout']");
+    }
+
+    public async Task<int> GetItemsCountAsync()
+    {
+        return await Page.Locator(".cart_item").CountAsync();
+    }
+
+    public async Task<string> GetFirstItemNameAsync()
+    {
+        return await Page.Locator(".inventory_item_name").First.InnerTextAsync();
     }
 }

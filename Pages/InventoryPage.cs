@@ -2,28 +2,31 @@
 
 namespace PlaywrightTests.Pages;
 
-public class InventoryPage
+public class InventoryPage : BasePage
 {
-    private readonly IPage _page;
-
-    public InventoryPage(IPage page)
+    public InventoryPage(IPage page) : base(page)
     {
-        _page = page;
     }
 
-    private ILocator AddToCartButton =>
-        _page.Locator("[data-test='add-to-cart-sauce-labs-backpack']");
-
-    private ILocator CartIcon =>
-        _page.Locator(".shopping_cart_link");
-
-    public async Task AddItemToCartAsync()
+    public async Task AddItemToCartAsync(string itemName)
     {
-        await AddToCartButton.ClickAsync();
+        var normalized = itemName.ToLower().Replace(" ", "-");
+
+        await Page.Locator($"[data-test='add-to-cart-{normalized}']").ClickAsync();
+    }
+
+    public async Task<string?> GetCartCountAsync()
+    {
+        var badge = Page.Locator(".shopping_cart_badge");
+
+        if (await badge.CountAsync() == 0)
+            return "0";
+
+        return await badge.InnerTextAsync();
     }
 
     public async Task OpenCartAsync()
     {
-        await CartIcon.ClickAsync();
+        await Page.Locator(".shopping_cart_link").ClickAsync();
     }
 }

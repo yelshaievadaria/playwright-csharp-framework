@@ -2,46 +2,31 @@
 
 namespace PlaywrightTests.Pages;
 
-public class CheckoutPage
+public class CheckoutPage : BasePage
 {
-    private readonly IPage _page;
-
-    public CheckoutPage(IPage page)
+    public CheckoutPage(IPage page) : base(page)
     {
-        _page = page;
     }
 
-    private ILocator CheckoutButton =>
-        _page.Locator("[data-test='checkout']");
-
-    private ILocator FirstName =>
-        _page.Locator("[data-test='firstName']");
-
-    private ILocator LastName =>
-        _page.Locator("[data-test='lastName']");
-
-    private ILocator PostalCode =>
-        _page.Locator("[data-test='postalCode']");
-
-    private ILocator ContinueButton =>
-        _page.Locator("[data-test='continue']");
-
-    public async Task StartCheckoutAsync()
+    public async Task FillCustomerInfoAsync(string firstName, string lastName, string postalCode)
     {
-        await CheckoutButton.ClickAsync();
+        await Page.FillAsync("[data-test='firstName']", firstName);
+        await Page.FillAsync("[data-test='lastName']", lastName);
+        await Page.FillAsync("[data-test='postalCode']", postalCode);
     }
 
-    public async Task FillCheckoutInformationAsync(
-        string firstName,
-        string lastName,
-        string postalCode)
+    public async Task ContinueAsync()
     {
-        await FirstName.FillAsync(firstName);
+        await Page.ClickAsync("[data-test='continue']");
+    }
 
-        await LastName.FillAsync(lastName);
+    public async Task FinishAsync()
+    {
+        await Page.ClickAsync("[data-test='finish']");
+    }
 
-        await PostalCode.FillAsync(postalCode);
-
-        await ContinueButton.ClickAsync();
+    public async Task<string?> GetSuccessMessageAsync()
+    {
+        return await Page.TextContentAsync(".complete-header");
     }
 }

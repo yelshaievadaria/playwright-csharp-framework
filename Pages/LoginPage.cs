@@ -2,30 +2,35 @@ using Microsoft.Playwright;
 
 namespace PlaywrightTests.Pages;
 
-public class LoginPage
+public class LoginPage : BasePage
 {
-    private readonly IPage _page;
+    private readonly ILocator _username;
+    private readonly ILocator _password;
+    private readonly ILocator _loginButton;
+    private readonly ILocator _error;
 
-    public LoginPage(IPage page)
+    public LoginPage(IPage page) : base(page)
     {
-        _page = page;
+        _username = Page.Locator("[data-test='username']");
+        _password = Page.Locator("[data-test='password']");
+        _loginButton = Page.Locator("[data-test='login-button']");
+        _error = Page.Locator("[data-test='error']");
     }
 
-    // locators
-    private ILocator Username => _page.Locator("#user-name");
-    private ILocator Password => _page.Locator("#password");
-    private ILocator LoginButton => _page.Locator("#login-button");
-
-    // actions
-    public async Task GoToAsync()
+    public async Task OpenAsync()
     {
-        await _page.GotoAsync("https://www.saucedemo.com");
+        await Page.GotoAsync("https://www.saucedemo.com");
     }
 
-    public async Task LoginAsync(string username, string password)
+    public async Task LoginAsync(string user, string pass)
     {
-        await Username.FillAsync(username);
-        await Password.FillAsync(password);
-        await LoginButton.ClickAsync();
+        await _username.FillAsync(user);
+        await _password.FillAsync(pass);
+        await _loginButton.ClickAsync();
+    }
+
+    public async Task<string> GetErrorMessageAsync()
+    {
+        return await _error.InnerTextAsync();
     }
 }
