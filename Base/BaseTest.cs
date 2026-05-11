@@ -1,35 +1,39 @@
-using Microsoft.Playwright;
 using NUnit.Framework;
+using Microsoft.Playwright;
+using System.Threading.Tasks;
 
-namespace PlaywrightTests.Base;
-
-public class BaseTest
+namespace PlaywrightTests.Base
 {
-    protected IPlaywright Playwright;
-    protected IBrowser Browser;
-    protected IBrowserContext Context;
-    protected IPage Page;
-
-    [SetUp]
-    public async Task Setup()
+    public class BaseTest
     {
-        Playwright = await Microsoft.Playwright.Playwright.CreateAsync();
+        protected IPlaywright Playwright;
+        protected IBrowser Browser;
+        protected IBrowserContext Context;
+        protected IPage Page;
 
-        Browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        [SetUp]
+        public async Task Setup()
         {
-            Headless = false,
-            SlowMo = 500
-        });
+            Playwright = await Microsoft.Playwright.Playwright.CreateAsync();
 
-        Context = await Browser.NewContextAsync();
+            Browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            {
+                Headless = false
+            });
 
-        Page = await Context.NewPageAsync();
-    }
+            Context = await Browser.NewContextAsync();
+            Page = await Context.NewPageAsync();
+        }
 
-    [TearDown]
-    public async Task TearDown()
-    {
-        await Browser.CloseAsync();
-        Playwright.Dispose();
+        [TearDown]
+        public async Task TearDown()
+        {
+            if (Browser != null)
+            {
+                await Browser.CloseAsync();
+            }
+
+            Playwright?.Dispose();
+        }
     }
 }
